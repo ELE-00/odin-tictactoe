@@ -78,7 +78,7 @@ function gameBoard() {
         }
     }
 
-
+    //Functionality to accept player's token and prevent replacing
     function addToken(row,col,token) {
         if(board[row][col] !="") {
             console.log("Cell occupied")
@@ -86,17 +86,42 @@ function gameBoard() {
         };
     };
     
-    
+    //Gets the current board
     const getBoard = () => {
         return board;
     };
 
-
+    //Prints the grid in the console
     const printBoard = () => {
         return console.log(board)
     };
 
+    //Checks winning patterns
+    function checkWinner(board, token) {
+        const winPatterns = [
+             //Rows
+            [[0, 0], [0, 1], [0, 2]], 
+            [[1, 0], [1, 1], [1, 2]], 
+            [[2, 0], [2, 1], [2, 2]], 
+            //Columns
+            [[0, 0], [1, 0], [2, 0]], 
+            [[0, 1], [1, 1], [2, 1]],
+            [[0, 2], [1, 2], [2, 2]],
+            //Diagonals
+            [[0, 0], [1, 1], [2, 2]],
+            [[0, 2], [1, 1], [2, 0]],       
+        ];
+        return winPatterns.some(pattern => 
+            pattern.every(([row, col]) => board[row][col] === token)
+        );
+    };
 
+    function isBoardFull(board) {
+        return board.every(row => row.every(cell => cell !== ""));
+    };
+
+
+    //Created a new grid board
     const resetBoard = () => {
             //Grid creation loop
     for (let i = 0; i < rows; i++) {
@@ -107,20 +132,21 @@ function gameBoard() {
     };
 
     }
-        
-
-
-
-    return {addToken, printBoard, getBoard, resetBoard};
+      return {addToken, printBoard, getBoard, resetBoard, checkWinner, isBoardFull};
 }
 
-
+//Player Object
 function player(name, token) {
     this.name = name;
     this.token = token;
 }
 
 
+/* 
+** The GameController will be responsible for controlling the 
+** flow and state of the game's turns, as well as whether
+** anybody has won the game
+*/
 function gameController() {
 
     const board = gameBoard();
@@ -128,7 +154,7 @@ function gameController() {
     const player1 = new player("Elvin", "x");
     const player2 = new player("Fira", "0");
 
-
+    //Prints current board
     const printNewRound = () => {
         board.printBoard();
     };
@@ -136,6 +162,7 @@ function gameController() {
 
     let activePlayer = player1;
 
+    //Swtiches players
     const switchPlayerTurn = () => {
         if(activePlayer === player1) {
             activePlayer = player2
@@ -143,28 +170,21 @@ function gameController() {
             activePlayer = player1}
     };
 
+    //Gets active player after swtich
     const getActivePlayer = () => activePlayer;
 
 
+    //Plays rounds and checked for winners or tie
     const playRound = (row, col, token) => {
         board.addToken(row, col, token);
 
         const currentBoard = board.getBoard();
         const currentToken = getActivePlayer().token;
         
-        if(
-            currentBoard[0][0] === currentToken && currentBoard[0][1] === currentToken && currentBoard[0][2] === currentToken ||
-            currentBoard[1][0] === currentToken && currentBoard[1][1] === currentToken && currentBoard[1][2] === currentToken ||
-            currentBoard[2][0] === currentToken && currentBoard[2][1] === currentToken && currentBoard[2][2] === currentToken ||
-
-            currentBoard[0][0] === currentToken && currentBoard[1][0] === currentToken && currentBoard[2][0] === currentToken ||
-            currentBoard[0][1] === currentToken && currentBoard[1][1] === currentToken && currentBoard[2][1] === currentToken ||
-            currentBoard[0][2] === currentToken && currentBoard[1][2] === currentToken && currentBoard[2][2] === currentToken ||
-
-            currentBoard[0][0] === currentToken && currentBoard[1][1] === currentToken && currentBoard[2][2] === currentToken ||
-            currentBoard[0][2] === currentToken && currentBoard[1][1] === currentToken && currentBoard[2][0] === currentToken)
-            {
+        if(board.checkWinner(currentBoard, currentToken)) {
             console.log(getActivePlayer().name + " WON")
+        } else if (!board.checkWinner(currentBoard, currentToken) && board.isBoardFull(currentBoard)) {
+            console.log("It's a Tie! Game over.")
         }else {
             switchPlayerTurn()
             printNewRound()
@@ -177,11 +197,12 @@ function gameController() {
 
 const game = gameController();
 
-console.log("Current player:", game.getActivePlayer().name);
-game.playRound(2, 0, game.getActivePlayer().token);
 
 console.log("Current player:", game.getActivePlayer().name);
-game.playRound(1, 2, game.getActivePlayer().token);
+game.playRound(0, 0, game.getActivePlayer().token);
+
+console.log("Current player:", game.getActivePlayer().name);
+game.playRound(2, 2, game.getActivePlayer().token);
 
 console.log("Current player:", game.getActivePlayer().name);
 game.playRound(0, 2, game.getActivePlayer().token);
@@ -189,6 +210,18 @@ game.playRound(0, 2, game.getActivePlayer().token);
 console.log("Current player:", game.getActivePlayer().name);
 game.playRound(1, 0, game.getActivePlayer().token);
 
-
 console.log("Current player:", game.getActivePlayer().name);
 game.playRound(1, 1, game.getActivePlayer().token);
+
+console.log("Current player:", game.getActivePlayer().name);
+game.playRound(0, 1, game.getActivePlayer().token);
+
+console.log("Current player:", game.getActivePlayer().name);
+game.playRound(2, 1, game.getActivePlayer().token);
+
+console.log("Current player:", game.getActivePlayer().name);
+game.playRound(2, 0, game.getActivePlayer().token);
+
+console.log("Current player:", game.getActivePlayer().name);
+game.playRound(1, 2, game.getActivePlayer().token);
+
