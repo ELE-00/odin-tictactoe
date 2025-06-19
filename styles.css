@@ -1,0 +1,77 @@
+
+/* styles.css */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: rgb(255, 255, 255);
+    font-family: Roboto, sans-serif;
+}
+
+.mainContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* border: 2px solid rgb(0, 255, 115); */
+}
+
+.contentSection{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    place-items: center;
+    /* border: 2px solid rgb(0, 4, 255); */
+
+}
+
+
+.headerContainer{
+    display: grid;
+    /* border: 2px solid rgb(0, 4, 255); */
+    height: 200px;
+    width: 100vw;
+    place-items: center;
+}
+
+.gridContainer{
+    display: grid;
+    /* border: 1px solid red; */
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    place-items: center;
+    width: 600px;
+}
+
+.gridItem {
+    display: grid;
+    height: 200px;
+    width: 200px;
+    border: 1px solid black;
+    place-items: center;
+    font-size: 100px;
+
+}
+
+
+.headerTitle {
+    font-weight: bold;
+    font-size: 50px;
+}
+
+
+.display {
+    display: grid;
+    font-size: 20px;
+    border: 1px solid black;
+    height: 50px;
+    width: 600px;
+    place-items: center;
+}
+
+.scoreCount{
+    display: grid;
+    height: 100px;
+    width: 200px;
+    border: 1px solid black;
+    place-items: center;
+    font-size: 15px;
+}

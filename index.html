@@ -3,11 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOP: Tic-Tac-Toe</title>
+    <title>TOP: Tic, Tac, Toe</title>
 </head>
     <link rel="stylesheet" href="styles.css"> 
 <body>
-    
+    <div class="mainContainer">
+        <div class="headerContainer">
+            <div class="headerTitle">Tic-Tac-Toe</div>
+            <button class="btn" id="newGame">New Game</button>
+            <div class="display"></div>
+        </div>
+
+        <div class="contentSection">
+            <div class="scoreCount" id="p1ScoreContainer">
+                <div class="playerName" id="p1Name">"Player 1's Score (X):"</div>
+                <div class="playerScore" id="p1Score">0</div>
+            </div>
+
+            <div class="gridContainer"></div>
+
+            <div class="scoreCount" id="p2ScoreContainer">
+                <div class="playerName" id="p2Name">"Player 2's Score (X):"</div>
+                <div class="playerScore" id="p2Score">0</div>
+            </div>
+        </div>
+    </div>
+    <dialog id="newGameDialog">
+        <form>
+            <label for="p1">Player One Name:</label>
+            <input type="text" id="p1">
+            <label for="p2">Player One Name:</label>
+            <input type="text" id="p2">
+            <button type="submit" class="startBtn">Start</button>
+        </form>
+    </dialog>  
+
+    <dialog id="gameResultDialog">
+        <form>
+            <legend class="gameResult"></legend>
+            <button type="button" id="nxtRoundBtn">Next Round</button>
+            <button class="btn" id = "restartGame">Restart</button>
+        </form>
+    </dialog> 
+
+
     <script src="script.js"></script>
 </body>
 </html>

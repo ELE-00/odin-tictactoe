@@ -1,67 +1,19 @@
-/* 
-Game play:
-Player 1 - X
-Player 2 - 0
+//Game board object responsible for the grid
+function gridItem(value, id){
+    const container = document.querySelector(".gridContainer")
+    this.value = value
+    this.id = id
 
-3x3 grid
+    const gridItem = document.createElement("div")
+    gridItem.classList.add("gridItem")
+    gridItem.id = this.id;
+    gridItem.textContent = this.value;
+    
+    container.appendChild(gridItem);
+    
+    return gridItem;
+}
 
-Players take turns and place the marker on the grid.
-Once the marker is placed, it cannot be changed or overwritten.
-
-WIN -> 3 markers of same kind are placed in row - vertical, horizontal or diagonal.
-Tie -> 2 markers in a row not found.
-Winning markers gets stricked through.
-Winning marker = winning player.
-
-
-
-Console Requisites:
-
-Object - Gameboard
-- Set up a grid using rows and columns variables
-- Create an array using a loop
-- find empty cells
-- add player token to the board + winner/tie check
-- print board
-- return getBoard, addToken, PrinBoard
-
-
-
-Object - Players
-- Allows to asign a name to the player
-
-
-
-Object - Game controller
-- Get the board
-- get the players
-
-- ** round starts **
-- current board prints
-- player turn announced
-- players drops a token in a column
-
-- check if there is a winner or a tie, if note:
-
-- players turn switched
-- new round begins
-
-
-
-row = (0)(1)(2)
-columen= (0)(1)(2)
-
-Grid
-000
-111
-222
-
-
-
-Rules:
-- As little global code as possible. Use factories.
-
-*/
 
 function gameBoard() {
     //Grid
@@ -70,22 +22,40 @@ function gameBoard() {
     const board = []
 
 
+    //     //Grid creation loop
+    // for (let i = 0; i < rows; i++) {   //3 rows created
+    //     for (let j = 0; j < columns; j++) { //for each row 3 columns create
+    //     gridItem("0");
+    //     }
+    // }
+    
+
+
     //Grid creation loop
-    for (let i = 0; i < rows; i++) {
+    for (let i = 0; i < rows; i++) {   //2 rows created
         board[i] = []
-        for (let j = 0; j < columns; j++) {
+        for (let j = 0; j < columns; j++) { //for each row 3 columns create
             board[i].push("");
+            gridItem("","cell-" + i + "-" + j )
         }
     }
 
+
+    
     //Functionality to accept player's token and prevent replacing
     function addToken(row,col,token) {
         if(board[row][col] !="") {
             console.log("Cell occupied")
-        } else {board[row][col] = token
+        } else {
+            board[row][col] = token;
+            
+            const gridCell = document.getElementById("cell-" + row + "-" + col)
+            gridCell.textContent = token;
         };
     };
     
+    
+
     //Gets the current board
     const getBoard = () => {
         return board;
@@ -111,10 +81,17 @@ function gameBoard() {
             [[0, 0], [1, 1], [2, 2]],
             [[0, 2], [1, 1], [2, 0]],       
         ];
+        
         return winPatterns.some(pattern => 
             pattern.every(([row, col]) => board[row][col] === token)
+            
         );
     };
+
+
+
+
+
 
     function isBoardFull(board) {
         return board.every(row => row.every(cell => cell !== ""));
@@ -123,17 +100,21 @@ function gameBoard() {
 
     //Created a new grid board
     const resetBoard = () => {
-            //Grid creation loop
-    for (let i = 0; i < rows; i++) {
-        board[i] = []
-        for (let j = 0; j < columns; j++) {
-            board[i].push("");
+        for (let i = 0; i < rows; i++) {
+            board[i] = []
+            for (let j = 0; j < columns; j++) {
+                board[i][j] = "";
+                const gridCell = document.getElementById("cell-" + i + "-" + j)
+                gridCell.textContent = "";
+            }
         }
     };
 
-    }
+    
       return {addToken, printBoard, getBoard, resetBoard, checkWinner, isBoardFull};
 }
+
+
 
 //Player Object
 function player(name, token) {
@@ -151,16 +132,52 @@ function gameController() {
 
     const board = gameBoard();
 
-    const player1 = new player("Elvin", "x");
-    const player2 = new player("Fira", "0");
+    const playerDialog = document.getElementById("newGameDialog"); 
+    const newGameBtn = document.getElementById("newGame") 
 
-    //Prints current board
-    const printNewRound = () => {
-        board.printBoard();
-    };
+    newGameBtn.addEventListener("click", () => {
+        playerDialog.showModal();
+    } )
 
 
-    let activePlayer = player1;
+    let player1 = "";
+    let player2 = "";
+    let p1score = 0;
+    let p2score = 0;
+    let activePlayer = "";
+
+    //Submission of players to the game
+    document.getElementById("newGameDialog").addEventListener("submit", function(event) {
+    event.preventDefault(); //To stop attempt to send data to non existant server
+
+    const p1 = document.getElementById("p1").value;
+    const p2 = document.getElementById("p2").value;
+
+    player1 = new player(p1, "X");
+    player2 = new player(p2, "0");
+    activePlayer = player1;
+    
+    
+    //Update the player/score containers
+    const p1NameDisplay =  document.getElementById("p1Name")
+    p1NameDisplay.textContent = p1 + "'s Score (X):"
+    const p2NameDisplay =  document.getElementById("p2Name")
+    p2NameDisplay.textContent = p2 + "'s Score (0):"
+
+    const p1ScoreDisplay =  document.getElementById("p1Score")
+    p1ScoreDisplay.textContent = p1score;
+    const p2ScoreDisplay =  document.getElementById("p2Score")
+    p2ScoreDisplay.textContent = p2score;
+
+
+    display("Turn: " + getActivePlayer().name) 
+    playerDialog.close();
+
+    });
+
+
+
+
 
     //Swtiches players
     const switchPlayerTurn = () => {
@@ -174,20 +191,105 @@ function gameController() {
     const getActivePlayer = () => activePlayer;
 
 
+    function display(text) {
+        const display = document.querySelector(".display")
+        display.textContent = text
+
+        return display
+    };
+
+
+    //Grid click function
+    const gridCell = document.querySelectorAll(".gridItem")
+    gridCell.forEach(cell => {
+        cell.addEventListener("click", () => {
+            const currentBoard = board.getBoard();
+            const currentToken = getActivePlayer().token;
+            
+
+            const parts = cell.id.split("-"); // ["cell", "1", "2"]
+            const row = parseInt(parts[1]);
+            const col = parseInt(parts[2]); 
+
+            if (board.checkWinner(currentBoard, currentToken)) {
+                display(getActivePlayer().name + " WON");
+
+            } else if (!board.checkWinner(currentBoard, currentToken) && board.isBoardFull(currentBoard)) {
+                display("It's a Tie! Game over.");
+                
+            } else {
+                playRound(row, col, getActivePlayer().token)
+
+            } 
+        } )   
+    })
+
+
+    function resultDialog(result, p1score, p2score) {
+        const resultDialog = document.getElementById("gameResultDialog"); 
+        const nxtRoundBtn = document.getElementById("nxtRoundBtn");
+        const restartBtn = document.getElementById("restartGame");
+        const legendTxt = document.querySelector(".gameResult");
+
+        resultDialog.showModal();
+        legendTxt.textContent = result;
+
+        // Remove previous listeners to avoid stacking
+        nxtRoundBtn.replaceWith(nxtRoundBtn.cloneNode(true));
+        restartBtn.replaceWith(restartBtn.cloneNode(true));
+
+        const newNxtRoundBtn = document.getElementById("nxtRoundBtn");
+        const newRestartBtn = document.getElementById("restartGame");
+
+        newNxtRoundBtn.addEventListener("click", () => {
+            const p1ScoreDisplay = document.getElementById("p1Score");
+            p1ScoreDisplay.textContent = p1score;
+            const p2ScoreDisplay = document.getElementById("p2Score");
+            p2ScoreDisplay.textContent = p2score;
+
+            resultDialog.close();
+            board.resetBoard();
+        });
+
+        newRestartBtn.addEventListener("click", () => {
+            resultDialog.close();
+
+        });
+    }
+
+
+
     //Plays rounds and checked for winners or tie
     const playRound = (row, col, token) => {
         board.addToken(row, col, token);
 
         const currentBoard = board.getBoard();
         const currentToken = getActivePlayer().token;
-        
-        if(board.checkWinner(currentBoard, currentToken)) {
-            console.log(getActivePlayer().name + " WON")
+
+        if (board.checkWinner(currentBoard, currentToken)) {
+
+            resulttext = getActivePlayer().name + " WON" 
+
+            if(getActivePlayer().name == player1.name) {
+               p1score++;
+            } else {
+                p2score++;
+            };
+            resultDialog(resulttext, p1score, p2score);
+
+            display(getActivePlayer().name + " WON");
+
+
         } else if (!board.checkWinner(currentBoard, currentToken) && board.isBoardFull(currentBoard)) {
-            console.log("It's a Tie! Game over.")
-        }else {
-            switchPlayerTurn()
-            printNewRound()
+            
+            // It’s a tie
+            const resulttext = "It's a Tie!";
+            resultDialog(resulttext, 0, 0);
+
+        } else {
+            // Continue game
+            switchPlayerTurn();
+            display("Turn: " + getActivePlayer().name);
         }
     };
 
@@ -196,32 +298,4 @@ function gameController() {
 };
 
 const game = gameController();
-
-
-console.log("Current player:", game.getActivePlayer().name);
-game.playRound(0, 0, game.getActivePlayer().token);
-
-console.log("Current player:", game.getActivePlayer().name);
-game.playRound(2, 2, game.getActivePlayer().token);
-
-console.log("Current player:", game.getActivePlayer().name);
-game.playRound(0, 2, game.getActivePlayer().token);
-
-console.log("Current player:", game.getActivePlayer().name);
-game.playRound(1, 0, game.getActivePlayer().token);
-
-console.log("Current player:", game.getActivePlayer().name);
-game.playRound(1, 1, game.getActivePlayer().token);
-
-console.log("Current player:", game.getActivePlayer().name);
-game.playRound(0, 1, game.getActivePlayer().token);
-
-console.log("Current player:", game.getActivePlayer().name);
-game.playRound(2, 1, game.getActivePlayer().token);
-
-console.log("Current player:", game.getActivePlayer().name);
-game.playRound(2, 0, game.getActivePlayer().token);
-
-console.log("Current player:", game.getActivePlayer().name);
-game.playRound(1, 2, game.getActivePlayer().token);
 
