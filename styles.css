@@ -61,7 +61,7 @@ body {
 .display {
     display: grid;
     font-size: 20px;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     height: 50px;
     width: 600px;
     place-items: center;
