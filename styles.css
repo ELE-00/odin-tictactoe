@@ -1,10 +1,18 @@
+@font-face {
+  font-family: 'RosieBrownSerifDemo';
+  src: url('./fonts/Rosie Brown Serif Demo.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 
 /* styles.css */
 body {
     margin: 0;
     padding: 0;
     background-color: rgb(255, 255, 255);
-    font-family: Roboto, sans-serif;
+    font-family: Palantino Linotype, serif;
+    background-color: #34173C;
 }
 
 .mainContainer{
@@ -26,10 +34,13 @@ body {
 
 .headerContainer{
     display: grid;
+    grid-template-rows: 1fr 1fr;
     /* border: 2px solid rgb(0, 4, 255); */
     height: 200px;
     width: 100vw;
     place-items: center;
+    margin-bottom: 10px;
+
 }
 
 .gridContainer{
@@ -39,39 +50,166 @@ body {
     grid-template-columns: 1fr 1fr 1fr;
     place-items: center;
     width: 600px;
+    gap: 5px;
+    margin-top: 20px;
 }
 
 .gridItem {
     display: grid;
     height: 200px;
     width: 200px;
-    border: 1px solid black;
+    border: 1px solid #885D94;
     place-items: center;
     font-size: 100px;
+    background-color: #F3D3FC;
+    border-radius: 10px;
+    color: #885D94; 
+    border: 4px solid transparent;
+    border-radius: 10px;
+    background: 
+    linear-gradient(#F3D3FC,#F3D3FC) padding-box,
+    linear-gradient(to top, #885D94 30%, #FFF 100%) border-box;
+    
 
 }
 
 
 .headerTitle {
-    font-weight: bold;
-    font-size: 50px;
+    height: 150px;
+    font-size: 80px;
+    color: #F0D4FF; 
+    font-family: RosieBrownSerifDemo, serif ;
+    /* border: 1px solid red; */
 }
 
 
-.display {
+.p1scoresection .p2scoresection{
     display: grid;
-    font-size: 20px;
-    /* border: 1px solid black; */
-    height: 50px;
-    width: 600px;
+    grid-template-rows: 1fr 1fr;
+    height: 200px;
+    gap: 20px;
     place-items: center;
+    border: 1px solid red;
+
 }
+
+
+.p1display, .p2display {
+    color: #F0D4FF; 
+    justify-self: center;
+    font-size: 30px;
+    font-weight: bold;
+    height: 50px;
+
+}
+
 
 .scoreCount{
     display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
     height: 100px;
-    width: 200px;
-    border: 1px solid black;
+    width: 300px;
     place-items: center;
-    font-size: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 10px;
+    /* background-color: #F3D3FC; */
+    color: #F0D4FF;
+    border: 4px solid transparent;
+    border-radius: 10px;
+    background: 
+    linear-gradient(#34173C,#34173C) padding-box,
+    linear-gradient(to top, #885D94 30%, #F0D4FF 100%) border-box;
+    margin-top: 10px;
+
 }
+
+
+.playerName{
+    margin-top: 10px;
+}
+
+#p1Score, #p2Score{
+  font-size: 40px;  
+}
+
+h1 {
+  font-size: 72px;
+  background: -webkit-linear-gradient(#F3D3FC, #885D94);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.btn, .startBtn {
+    height: 50px;
+    width: 100px;
+    font-weight: bold;
+    color: #885D94;
+    border: 4px solid transparent;
+    border-radius: 10px;
+    background: 
+    linear-gradient(#f6dffc,#f6dffc) padding-box,
+    linear-gradient(to top, #885D94 30%, #F0D4FF 100%) border-box;
+
+}
+
+#newGameDialog{
+    height: 250px;
+    width: 500px;
+    font-weight: bold;
+    font-size: 20px;
+    color: #F0D4FF;
+    border: 4px solid transparent;
+    border-radius: 10px;
+    background: 
+    linear-gradient(#885D94,#34173C) padding-box,
+    linear-gradient(to bottom, #F0D4FF 30%, #34173C 100%) border-box;
+
+
+
+}
+
+#newGameDialog > form {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 20px;
+
+    /* font-weight: bold;
+    color: #34173C; */
+    /* background: 
+    linear-gradient(#f6dffc,#f6dffc) padding-box,
+    linear-gradient(to top, #885D94 30%, #F0D4FF 100%) border-box; */
+
+}
+
+#gameResultDialog{
+     /* display: grid; */
+    height: 150px;
+    width: 300px;
+    font-weight: bold;
+    font-size: 30px;
+    color: #F0D4FF;
+    border: 4px solid transparent;
+    border-radius: 10px;
+    background: 
+    linear-gradient(#885D94,#34173C) padding-box,
+    linear-gradient(to bottom, #F0D4FF 30%, #34173C 100%) border-box;
+
+
+}
+
+
+#gameResultDialog > form {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 20px;
+    place-items: center;
+
+    /* font-weight: bold;
+    color: #34173C; */
+    /* background: 
+    linear-gradient(#f6dffc,#f6dffc) padding-box,
+    linear-gradient(to top, #885D94 30%, #F0D4FF 100%) border-box; */
+
+}
+

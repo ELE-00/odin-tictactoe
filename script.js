@@ -170,9 +170,9 @@ function gameController() {
     p2ScoreDisplay.textContent = p2score;
 
 
-    display("Turn: " + getActivePlayer().name) 
+    display("YOUR TURN") 
     playerDialog.close();
-
+ 
     });
 
 
@@ -192,8 +192,18 @@ function gameController() {
 
 
     function display(text) {
-        const display = document.querySelector(".display")
-        display.textContent = text
+        const p1Display = document.querySelector(".p1display")
+        const p2Display = document.querySelector(".p2display")
+        
+
+        if(getActivePlayer().name == player1.name) {
+        p1Display.textContent = text
+        p2Display.textContent = ""
+        } else {
+        p2Display.textContent = text
+        p1Display.textContent = ""
+
+        };
 
         return display
     };
@@ -224,7 +234,7 @@ function gameController() {
         } )   
     })
 
-
+    //Modal dialog showing game results and options.
     function resultDialog(result, p1score, p2score) {
         const resultDialog = document.getElementById("gameResultDialog"); 
         const nxtRoundBtn = document.getElementById("nxtRoundBtn");
@@ -289,7 +299,7 @@ function gameController() {
         } else {
             // Continue game
             switchPlayerTurn();
-            display("Turn: " + getActivePlayer().name);
+            display("YOUR TURN");
         }
     };
 
